@@ -40,7 +40,7 @@ public class XMLHelper {
 				Element channelElement = (Element)channelNode;
 				
 				String siteTitle=channelElement.getElementsByTagName("title").item(0).getTextContent();
-				System.out.println(siteTitle+"........");
+				
 				String siteLink=channelElement.getElementsByTagName("link").item(0).getTextContent();
 				
 				NodeList itemNodeList=channelElement.getElementsByTagName("item");
@@ -51,7 +51,6 @@ public class XMLHelper {
 					News news=createNewsItem(itemElement);
 					news.setSiteTitle(siteTitle);
 					news.setSiteAddress(siteLink);
-					System.out.println(news.getNewsTitle()+"........123");
 					parsedNews.add(news);
 					
 				}

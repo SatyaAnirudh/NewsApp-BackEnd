@@ -7,11 +7,11 @@ import com.example.News.entity.News;
 
 public interface NewsService {
 	
-	public void addNews(News news);
+	public boolean addNews(List<News> newsList);
 	
 	public List<News> getAllNews();
 	
-	public Optional<News> getNews(String newsId);
+	public News getNews(String newsId) throws Exception;
 	
 	public void deleteNews(String newsId);
 
