@@ -102,7 +102,6 @@ public class XMLHelper {
 	private Document loadXmlFromString(String xmlData) throws ParserConfigurationException, SAXException, IOException {
 		// TODO Auto-generated method stub
 		DocumentBuilder documentBuilder=DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		InputSource inputSource=new InputSource(xmlData);
 		
 		Document document=documentBuilder.parse(new InputSource(new StringReader(xmlData)));
 		document.getDocumentElement().normalize();
