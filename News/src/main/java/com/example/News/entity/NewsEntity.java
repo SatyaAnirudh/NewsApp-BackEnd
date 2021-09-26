@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="NEWS")
-public class News {
+public class NewsEntity {
 	
 	@Id
 	@Column(name="NEWS_ID")

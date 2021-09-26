@@ -22,7 +22,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.example.News.entity.News;
+import com.example.News.model.News;
 
 @Service
 public class XMLHelper {

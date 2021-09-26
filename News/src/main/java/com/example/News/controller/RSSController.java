@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.example.News.entity.News;
+import com.example.News.entity.NewsEntity;
+import com.example.News.model.News;
 import com.example.News.service.NewsService;
 import com.example.News.util.NewsConnection;
 import com.example.News.util.XMLHelper;
@@ -31,20 +32,16 @@ public class RSSController {
 	    
 	 
 	 @PostMapping(value="postRssUrl")
-	 public ResponseEntity<String> postFeed(@RequestBody String urlPath) {
+	 public ResponseEntity<List<String>> postFeed(@RequestBody String urlPath) {
 	   
 		 try {
 			 String xmlRss=NewsConnection.getRSSXml(urlPath);
 			 
 			 List<News> newsList= xmlHelper.parse(xmlRss);
 			 
-			 Boolean bool=newsService.addNews(newsList);
-			
-			 String res=null;
-			 if(bool)
-				 res="Sucessfully Saved News to DB";
+			 List<String> idList=newsService.addNews(newsList);
 			 
-			 return new ResponseEntity<String>(res, HttpStatus.OK);
+			 return new ResponseEntity<List<String>>(idList, HttpStatus.OK);
 			
 		 }
 		 catch(Exception e) {
@@ -73,9 +70,14 @@ public class RSSController {
 	 @GetMapping(value="getAllNews")
 	 public ResponseEntity<List<News>> getAllNews(){
 		 
-		 List<News> newsList=newsService.getAllNews();
-		 
-		 return new ResponseEntity<List<News>>(newsList, HttpStatus.OK);
+		 try {
+			 List<News> newsList=newsService.getAllNews();
+			 
+			 return new ResponseEntity<List<News>>(newsList, HttpStatus.OK);
+		 }
+		 catch(Exception e) {
+			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		 }
 		 
 	 }
 	 

@@ -3,11 +3,12 @@ package com.example.News.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.News.entity.News;
+import com.example.News.entity.NewsEntity;
+import com.example.News.model.News;
 
 public interface NewsService {
 	
-	public boolean addNews(List<News> newsList);
+	public List<String>  addNews(List<News> newsList);
 	
 	public List<News> getAllNews();
 	
