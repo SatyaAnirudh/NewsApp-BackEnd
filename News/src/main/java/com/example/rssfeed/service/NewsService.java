@@ -1,10 +1,9 @@
-package com.example.News.service;
+package com.example.rssfeed.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.example.News.entity.NewsEntity;
-import com.example.News.model.News;
+import com.example.rssfeed.model.News;
 
 public interface NewsService {
 	

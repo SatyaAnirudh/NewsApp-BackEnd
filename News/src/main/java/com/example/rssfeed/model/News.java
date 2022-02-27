@@ -1,4 +1,4 @@
-package com.example.News.entity;
+package com.example.rssfeed.model;
 
 import java.util.Date;
 
@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="NEWS")
-public class NewsEntity {
+public class News {
 	
 	@Id
 	@Column(name="NEWS_ID")

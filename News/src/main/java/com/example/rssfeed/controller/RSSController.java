@@ -1,4 +1,4 @@
-package com.example.News.controller;
+package com.example.rssfeed.controller;
 
 import java.util.List;
 
@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.example.News.entity.NewsEntity;
-import com.example.News.model.News;
-import com.example.News.service.NewsService;
-import com.example.News.util.NewsConnection;
-import com.example.News.util.XMLHelper;
+import com.example.rssfeed.model.News;
+import com.example.rssfeed.service.NewsService;
+import com.example.rssfeed.util.NewsConnection;
+import com.example.rssfeed.util.XMLHelper;
 
 
 @RestController

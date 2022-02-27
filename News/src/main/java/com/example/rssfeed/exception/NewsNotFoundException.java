@@ -1,4 +1,4 @@
-package com.example.News.exception;
+package com.example.rssfeed.exception;
 
 public class NewsNotFoundException extends Exception{
 	

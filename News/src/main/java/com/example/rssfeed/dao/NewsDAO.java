@@ -1,11 +1,10 @@
-package com.example.News.dao;
+package com.example.rssfeed.dao;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.News.entity.NewsEntity;
-import com.example.News.model.News;
+import com.example.rssfeed.model.News;
 
 public interface NewsDAO {
 	

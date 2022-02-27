@@ -1,4 +1,4 @@
-package com.example.News;
+package com.example.rssfeed;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

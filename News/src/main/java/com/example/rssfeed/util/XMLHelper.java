@@ -1,4 +1,4 @@
-package com.example.News.util;
+package com.example.rssfeed.util;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -22,7 +22,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.example.News.model.News;
+import com.example.rssfeed.model.News;
 
 @Service
 public class XMLHelper {

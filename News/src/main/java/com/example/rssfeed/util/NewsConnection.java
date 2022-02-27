@@ -1,4 +1,4 @@
-package com.example.News.util;
+package com.example.rssfeed.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
