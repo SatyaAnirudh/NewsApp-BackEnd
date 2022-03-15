@@ -30,6 +30,12 @@
 		</dependency>
 		
 		<dependency>
+  <groupId>org.apache.httpcomponents</groupId>
+  <artifactId>httpclient</artifactId>
+  <scope>test</scope>
+		</dependency>
+		
+		<dependency>
     		<groupId>com.rometools</groupId>
     		<artifactId>rome</artifactId>
     		<version>1.10.0</version>

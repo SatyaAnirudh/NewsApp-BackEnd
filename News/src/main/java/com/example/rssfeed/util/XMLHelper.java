@@ -5,15 +5,21 @@ import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,6 +36,8 @@ public class XMLHelper {
 	public List<News> parse(String xmlData){
 		
 		List<News> parsedNews = new ArrayList<>();
+		
+		//Map<String,Object> parsedData = new HashMap<>(); 
 		
 		try {
 			Document document = loadXmlFromString(xmlData);
@@ -49,8 +57,6 @@ public class XMLHelper {
 					Element itemElement=(Element)itemNode;
 					
 					News news=createNewsItem(itemElement);
-					news.setSiteTitle(siteTitle);
-					news.setSiteAddress(siteLink);
 					parsedNews.add(news);
 					
 				}
@@ -77,10 +83,10 @@ public class XMLHelper {
 		String description=itemElement.getElementsByTagName("description").item(0).getTextContent();
 		String pubDate=itemElement.getElementsByTagName("pubDate").item(0).getTextContent();
 		
-		String extractedId=link.substring(link.lastIndexOf("/")+1,link.lastIndexOf("."));
-		Date publishDate=convertToDate(pubDate);
+		//String extractedId=link.substring(link.lastIndexOf("/")+1,link.lastIndexOf("."));
+		LocalDateTime publishDate=convertToDate(pubDate);
 		
-		news.setId(extractedId);
+		//news.setId(extractedId);
 		news.setNewsDescription(description);
 		news.setNewsLink(link);
 		news.setNewsTitle(title);
@@ -90,12 +96,32 @@ public class XMLHelper {
 		return news;
 	}
 
-	private Date convertToDate(String pubDate) throws ParseException {
-		// TODO Auto-generated method stub Wed, 07 Jul 2021 15:45:02 IST
-		DateFormat dateFormat=new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
-		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+	private LocalDateTime convertToDate(String pubDate) throws ParseException {
+		// TODO Auto-generated method stub 2022-03-01T15:37:51+05:30
+		LocalDateTime dateTime=null;
+		DateTimeFormatter dateTimeFormatter=null;
 		
-		return dateFormat.parse(pubDate);
+		if(pubDate == null || pubDate.isEmpty())
+			return null;
+		
+		try {
+			pubDate=pubDate.trim();
+			dateTimeFormatter= new DateTimeFormatterBuilder()
+					   .appendOptional(DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z"))
+					   .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssz"))
+					   .appendOptional(DateTimeFormatter.ofPattern("E, d MMM yyyy HH:mm:ss Z"))
+					   .toFormatter();
+			dateTime = LocalDateTime.parse(pubDate, dateTimeFormatter);
+		}
+		catch(Exception e) {
+			
+		}
+		
+		//DateFormat dateFormat=new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+		//dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		//System.out.println(dateTime);
+		
+		return dateTime;
 	}
 
 	private Document loadXmlFromString(String xmlData) throws ParserConfigurationException, SAXException, IOException {

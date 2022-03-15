@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.rssfeed.dao.NewsDAO;
 import com.example.rssfeed.exception.NewsNotFoundException;
 import com.example.rssfeed.model.News;
+import com.example.rssfeed.model.NewsSite;
 
 @Service
 @Transactional
@@ -21,15 +22,14 @@ public class NewsServiceImpl implements NewsService{
 	private NewsDAO newsDAO;
 
 	@Override
-	public List<String> addNews(List<News> newsList) {
+	public List<Long> addNews(List<News> newsList) {
 		
-		List<String> idList=new ArrayList();
+		List<Long> idList=new ArrayList();
 		
 		for(News news:newsList) {
-			if(newsDAO.getNews(news.getId())==null) {
-				String id=newsDAO.addNews(news);
+			if(newsDAO.getNewsByNewsTitle(news.getNewsTitle())==null) {
+				Long id=newsDAO.addNews(news);
 				idList.add(id);
-				
 			}
 		}
 		
@@ -38,15 +38,25 @@ public class NewsServiceImpl implements NewsService{
 	}
 
 	@Override
-	public List<News> getAllNews() {
+	public List<News> getAllNews(Long newsSiteId) {
 		
-		return newsDAO.getAll();
+		return newsDAO.getAllNews(newsSiteId);
+	}
+	
+	@Override
+	public List<NewsSite> getAllNewsSites() {
+		
+		List<NewsSite> newsSites=newsDAO.getAllNewsSites();
+		
+		//newsSites.stream().forEach(site -> );
+		
+		return newsSites;
 	}
 
 	@Override
 	public News getNews(String newsId) throws Exception {
 		
-		News news=newsDAO.getNews(newsId);
+		News news=newsDAO.getNewsByNewsId(newsId);
 		
 		if(news==null)
 			throw new NewsNotFoundException("Invalid newsId");

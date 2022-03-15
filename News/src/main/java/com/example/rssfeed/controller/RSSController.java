@@ -1,8 +1,10 @@
 package com.example.rssfeed.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.example.rssfeed.model.News;
+import com.example.rssfeed.model.NewsSite;
 import com.example.rssfeed.service.NewsService;
 import com.example.rssfeed.util.NewsConnection;
 import com.example.rssfeed.util.XMLHelper;
@@ -28,20 +34,32 @@ public class RSSController {
 	 
 	 @Autowired
 	 private NewsService newsService;
+	 
+	    @Bean
+	    public WebMvcConfigurer corsConfigurer() {
+	        return new WebMvcConfigurerAdapter() {
+	            @Override
+	            public void addCorsMappings(CorsRegistry registry) {
+	                registry.addMapping("/**").allowedOrigins("*");
+	            }
+	        };
+	    }
 	    
 	 
 	 @PostMapping(value="postRssUrl")
-	 public ResponseEntity<List<String>> postFeed(@RequestBody String urlPath) {
+	 public ResponseEntity<List<Long>> postFeed(@RequestBody NewsSite newsSite) {
 	   
 		 try {
-			 String xmlRss=NewsConnection.getRSSXml(urlPath);
+			 String xmlRss=NewsConnection.getRSSXml(newsSite.getRssLink());
 			 
-			 List<News> newsList= xmlHelper.parse(xmlRss);
+			 List<News> newsList= xmlHelper.parse(xmlRss); 
+			 //System.out.println(newsList);
+			 newsList.stream().forEach(news -> news.setFkNewsSiteId(newsSite));
 			 
-			 List<String> idList=newsService.addNews(newsList);
+			 List<Long> idList=newsService.addNews(newsList);
 			 
-			 return new ResponseEntity<List<String>>(idList, HttpStatus.OK);
-			
+			 return new ResponseEntity<List<Long>>(idList, HttpStatus.OK);
+
 		 }
 		 catch(Exception e) {
 			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
@@ -66,13 +84,27 @@ public class RSSController {
 		 
 	 }
 	 
-	 @GetMapping(value="getAllNews")
-	 public ResponseEntity<List<News>> getAllNews(){
+	 @GetMapping(value="getAllNews/{newsSiteId}")
+	 public ResponseEntity<List<News>> getAllNews(@PathVariable Long newsSiteId){
 		 
 		 try {
-			 List<News> newsList=newsService.getAllNews();
+			 List<News> newsList=newsService.getAllNews(newsSiteId);
 			 
 			 return new ResponseEntity<List<News>>(newsList, HttpStatus.OK);
+		 }
+		 catch(Exception e) {
+			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		 }
+		 
+	 }
+	 
+	 @GetMapping(value="getAllNewsSites")
+	 public ResponseEntity<List<NewsSite>> getAllNewsSites(){
+		 
+		 try {
+			 List<NewsSite> newsSitesList=newsService.getAllNewsSites();
+			 
+			 return new ResponseEntity<List<NewsSite>>(newsSitesList, HttpStatus.OK);
 		 }
 		 catch(Exception e) {
 			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
