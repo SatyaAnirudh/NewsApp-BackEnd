@@ -29,9 +29,9 @@ public class NewsDAOImpl implements NewsDAO {
 	}
 
 	@Override
-	public List<News> getAllNews(Long newsSiteId) {
+	public List<News> getAllNewsForNewsSite(Long newsSiteId) {
 		
-		String str="SELECT n FROM News n where fkNewsSiteId.siteId=:newsSiteId order by n.publishDate DESC";
+		String str="SELECT n FROM News n where newsSite.siteId=:newsSiteId order by n.publishDate DESC";
 		
 		Query query=entityManager.createQuery(str);
 		query.setParameter("newsSiteId", newsSiteId);
@@ -87,6 +87,18 @@ public class NewsDAOImpl implements NewsDAO {
 		
 		
 	}
+
+	@Override
+	public List<News> getAllNews() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*@Override
+	public List<News> getAllNewsForNewsSites(Long newsSiteId) {
+		// TODO Auto-generated method stub
+		return null;
+	}*/
 
 	
 	

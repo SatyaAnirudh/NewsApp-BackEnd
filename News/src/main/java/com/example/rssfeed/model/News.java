@@ -22,7 +22,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="NEWS")
-public class News {
+public class News implements Comparable<News> {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class News {
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name ="FK_NEWS_SITE_ID")
-	private NewsSite fkNewsSiteId;
+	private NewsSite newsSite;
 	
 	@Column(name="NEWS_TITLE")
 	private String newsTitle;
@@ -45,6 +45,13 @@ public class News {
 	
 	@Column(name="PUBLISH_DATE")
 	private LocalDateTime publishDate;
+
+	@Override
+	public int compareTo(News o) {
+		// TODO Auto-generated method stub
+		
+		return o.getPublishDate().compareTo(this.getPublishDate());
+	}
 	
 	
 

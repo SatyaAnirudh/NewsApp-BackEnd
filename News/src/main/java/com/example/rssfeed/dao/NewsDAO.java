@@ -11,7 +11,9 @@ public interface NewsDAO  {
 	
 	public Long addNews(News news);
 	
-	public List<News> getAllNews(Long newsSite);
+	public List<News> getAllNews();
+	
+	public List<News> getAllNewsForNewsSite(Long newsSiteId);
 	
 	public List<NewsSite> getAllNewsSites();
 	

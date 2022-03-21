@@ -29,8 +29,7 @@ public class RSSController {
 	
     //private final String URL = "https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms";
 	 
-	 @Autowired
-	 private XMLHelper xmlHelper;
+	
 	 
 	 @Autowired
 	 private NewsService newsService;
@@ -50,13 +49,8 @@ public class RSSController {
 	 public ResponseEntity<List<Long>> postFeed(@RequestBody NewsSite newsSite) {
 	   
 		 try {
-			 String xmlRss=NewsConnection.getRSSXml(newsSite.getRssLink());
 			 
-			 List<News> newsList= xmlHelper.parse(xmlRss); 
-			 //System.out.println(newsList);
-			 newsList.stream().forEach(news -> news.setFkNewsSiteId(newsSite));
-			 
-			 List<Long> idList=newsService.addNews(newsList);
+			 List<Long> idList=newsService.addNews(newsSite);
 			 
 			 return new ResponseEntity<List<Long>>(idList, HttpStatus.OK);
 
@@ -84,11 +78,25 @@ public class RSSController {
 		 
 	 }
 	 
-	 @GetMapping(value="getAllNews/{newsSiteId}")
-	 public ResponseEntity<List<News>> getAllNews(@PathVariable Long newsSiteId){
+	 @GetMapping(value="getAllNews")
+	 public ResponseEntity<List<News>> getAllNews(){
 		 
 		 try {
-			 List<News> newsList=newsService.getAllNews(newsSiteId);
+			 List<News> newsList=newsService.getAllNews();
+			 
+			 return new ResponseEntity<List<News>>(newsList, HttpStatus.OK);
+		 }
+		 catch(Exception e) {
+			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		 }
+		 
+	 }
+	 
+	 @PostMapping(value="getAllNews")
+	 public ResponseEntity<List<News>> getAllNewsForNewsSite(@RequestBody NewsSite newsSite){
+		 
+		 try {
+			 List<News> newsList=newsService.getAllNewsForNewsSite(newsSite);
 			 
 			 return new ResponseEntity<List<News>>(newsList, HttpStatus.OK);
 		 }
